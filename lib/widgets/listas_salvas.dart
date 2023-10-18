@@ -1,8 +1,8 @@
-import 'package:calculadoraimc/model/calcular_imc.dart';
+import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
 import 'package:flutter/material.dart';
 
 class ListasSalvas extends StatelessWidget {
-  final Pessoa pessoa;
+  final PessoaSqliteModel pessoa;
 
   const ListasSalvas({super.key, required this.pessoa});
 
@@ -28,7 +28,7 @@ class ListasSalvas extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Text(pessoa.resultado().toString())
+            Text('')
           ],
         ),
       ),

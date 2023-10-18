@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
 import 'package:calculadoraimc/widgets/listas_salvas.dart';
 import 'package:flutter/material.dart';
-
-import '../model/calcular_imc.dart';
 
 class ResultadoPage extends StatefulWidget {
   final String resultado;
@@ -24,7 +24,7 @@ class ResultadoPage extends StatefulWidget {
 
 class _ResultadoPageState extends State<ResultadoPage> {
 // ignore: prefer_final_fields
-  var _pessoa = <Pessoa>[];
+  var _pessoa = <PessoaSqliteModel>[];
 
   @override
   Widget build(BuildContext context) {

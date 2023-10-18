@@ -1,4 +1,4 @@
-import 'package:calculadoraimc/model/calcular_imc.dart';
+import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
 import 'package:calculadoraimc/pages/resultado_page.dart';
 import 'package:calculadoraimc/widgets/formulario.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +67,11 @@ class _HomePageState extends State<HomePage> {
                     height: 50.0,
                     child: ElevatedButton(
                       onPressed: () {
-                        Pessoa calcularImc = Pessoa(peso: peso, altura: altura);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResultadoPage(
-                                  imc: calcularImc.imcEquacao(),
-                                  resultado: calcularImc.resultado(),
+                                  imc: PessoaSqliteModel.calculoImc(
+                                      peso, altura),
+                                  resultado: PessoaSqliteModel.resultado(),
                                   altura: altura,
                                   peso: peso,
                                 )));
