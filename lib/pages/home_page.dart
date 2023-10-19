@@ -1,5 +1,6 @@
 import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
 import 'package:calculadoraimc/pages/resultado_page.dart';
+import 'package:calculadoraimc/repositories/pessoa_sqlite_repository.dart';
 import 'package:calculadoraimc/widgets/formulario.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController pesoController = TextEditingController();
   TextEditingController alturaController = TextEditingController();
-
+  TextEditingController nomeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _resetFields() {
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  String nome = '';
   double peso = 0;
   double altura = 0;
 
@@ -51,6 +53,8 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.person_outline,
                     size: 120.0, color: Colors.black),
                 Formulario(
+                    labelText: 'Digite seu Nome', controller: nomeController),
+                Formulario(
                   labelText: 'Digite seu peso',
                   controller: pesoController,
                 ),
@@ -67,13 +71,19 @@ class _HomePageState extends State<HomePage> {
                     height: 50.0,
                     child: ElevatedButton(
                       onPressed: () {
+                        final pessoa = PessoaSqliteModel(
+                          nomeController.text,
+                          double.parse(pesoController.text),
+                          double.parse(alturaController.text),
+                        );
+                        PessoaSqliteRepository().salvarPessoa(pessoa);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResultadoPage(
                                   imc: PessoaSqliteModel.calculoImc(
-                                      peso, altura),
-                                  resultado: PessoaSqliteModel.resultado(),
-                                  altura: altura,
-                                  peso: peso,
+                                      double.parse(pesoController.text),
+                                      double.parse(alturaController.text)),
+                                  peso: double.parse(pesoController.text),
+                                  altura: double.parse(alturaController.text),
                                 )));
                       },
                       style: ElevatedButton.styleFrom(

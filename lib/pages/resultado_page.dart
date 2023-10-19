@@ -5,14 +5,12 @@ import 'package:calculadoraimc/widgets/listas_salvas.dart';
 import 'package:flutter/material.dart';
 
 class ResultadoPage extends StatefulWidget {
-  final String resultado;
   final String imc;
   final double peso;
   final double altura;
 
   const ResultadoPage({
     Key? key,
-    required this.resultado,
     required this.imc,
     required this.peso,
     required this.altura,
@@ -37,8 +35,10 @@ class _ResultadoPageState extends State<ResultadoPage> {
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.arrow_back_ios)),
         ),
-        body: Expanded(
+        body: SizedBox(
+          height: 300,
           child: ListView.builder(
+              shrinkWrap: true,
               itemCount: _pessoa.length,
               itemBuilder: (context, index) {
                 var pessoa = _pessoa[index];

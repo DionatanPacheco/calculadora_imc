@@ -105,18 +105,13 @@ class PessoaSqliteRepository {
     final List<Map<String, dynamic>> results = await db.query(_tableName);
     return results.map((map) {
       return PessoaSqliteModel(
-        map['id'],
-        map['nome'],
-        map['peso'],
-        map['altura'],
-      );
+          map['nome'], map['peso'], map['altura'], map['resultadoImc']);
     }).toList();
   }
 
   Future<void> atualizarPessoa(PessoaSqliteModel pessoa) async {
     final Database db = await _initializeDatabase();
     final Map<String, dynamic> pessoaData = {
-      'id': pessoa.id,
       'nome': pessoa.nome,
       'peso': pessoa.peso,
       'altura': pessoa.altura,

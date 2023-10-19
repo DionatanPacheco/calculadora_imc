@@ -28,7 +28,7 @@ class ListasSalvas extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Text('')
+            Text(pessoa.resultadoImc)
           ],
         ),
       ),

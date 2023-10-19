@@ -1,20 +1,22 @@
 import 'package:intl/intl.dart';
 
 class PessoaSqliteModel {
-  int _id = 0;
+  int? _id;
   String _nome = "";
   double _peso = 0.0;
   double _altura = 0.0;
   final String _data = DateFormat('dd/MM/yy').format(DateTime.now());
-  double _imc = 0.0;
+  final double _imc = 0.0;
   String _resultadoImc = "";
   PessoaSqliteModel(
     this._id,
     this._nome,
     this._peso,
     this._altura,
+    this._resultadoImc,
   );
-  int get id => _id;
+  PessoaSqliteModel._();
+  int get id => _id ?? 0;
   set id(int id) {
     _id = id;
   }
@@ -43,7 +45,7 @@ class PessoaSqliteModel {
 
   String get resultadoImc => _resultadoImc;
 
-  void calculoImc(double peso, double altura) {
+  static String calculoImc(double peso, double altura) {
     double imc = peso / (altura * altura);
     String resultado = "";
     if (imc < 18.6) {
@@ -65,7 +67,8 @@ class PessoaSqliteModel {
     } else {
       resultado = "Peso ou Altura invalidos, tente novamente!";
     }
-    _resultadoImc = resultado;
+
     imc = double.parse(imc.toStringAsFixed(2));
+    return resultado;
   }
 }
