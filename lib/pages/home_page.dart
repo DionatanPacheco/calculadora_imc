@@ -8,8 +8,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -70,21 +69,20 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     height: 50.0,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final pessoa = PessoaSqliteModel(
-                          nomeController.text,
-                          double.parse(pesoController.text),
-                          double.parse(alturaController.text),
+                          nome: nomeController.text,
+                          peso: double.parse(pesoController.text),
+                          altura: double.parse(alturaController.text),
                         );
-                        PessoaSqliteRepository().salvarPessoa(pessoa);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResultadoPage(
-                                  imc: PessoaSqliteModel.calculoImc(
-                                      double.parse(pesoController.text),
-                                      double.parse(alturaController.text)),
-                                  peso: double.parse(pesoController.text),
-                                  altura: double.parse(alturaController.text),
-                                )));
+
+                        await PessoaSqliteRepository().salvarPessoa(pessoa);
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ResultadoPage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black),

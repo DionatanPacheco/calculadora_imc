@@ -69,16 +69,6 @@ class AppStorageService {
     return storage.getString(chave) ?? "";
   }
 
-  Future<void> _setInt(String chave, int value) async {
-    var storage = await SharedPreferences.getInstance();
-    await storage.setInt(chave, value);
-  }
-
-  Future<int> _getInt(String chave) async {
-    var storage = await SharedPreferences.getInstance();
-    return storage.getInt(chave) ?? 0;
-  }
-
   Future<void> _setDouble(String chave, double value) async {
     var storage = await SharedPreferences.getInstance();
     await storage.setDouble(chave, value);
@@ -87,15 +77,5 @@ class AppStorageService {
   Future<double> _getDouble(String chave) async {
     var storage = await SharedPreferences.getInstance();
     return storage.getDouble(chave) ?? 0;
-  }
-
-  Future<void> _setStringList(String chave, List<String> values) async {
-    var storage = await SharedPreferences.getInstance();
-    await storage.setStringList(chave, values);
-  }
-
-  Future<List<String>> _getStringList(String chave) async {
-    var storage = await SharedPreferences.getInstance();
-    return storage.getStringList(chave) ?? [];
   }
 }

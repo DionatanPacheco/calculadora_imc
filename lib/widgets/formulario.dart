@@ -33,7 +33,7 @@ class Formulario extends StatelessWidget {
               controller: controller,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "Insira sua altura!";
+                  return "Insira seus dados!";
                 }
                 return null;
               },
