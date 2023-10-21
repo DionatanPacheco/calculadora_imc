@@ -1,4 +1,4 @@
-#Thu Oct 19 17:19:51 BRT 2023
-base.0=D\:\\BootCamp\\3_Desafio\\calculadora_imc\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
+#Fri Oct 20 21:02:04 BRT 2023
+base.0=/Volumes/Macintosh SSD/Projetos Flutter/Calculadora/calculadora_imc/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.0=classes.dex
+renamed.0=classes.dex

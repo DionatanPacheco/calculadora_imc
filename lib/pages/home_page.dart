@@ -8,8 +8,7 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -50,10 +49,8 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(Icons.person_outline,
-                    size: 120.0, color: Colors.black),
-                Formulario(
-                    labelText: 'Digite seu Nome', controller: nomeController),
+                const Icon(Icons.person_outline, size: 120.0, color: Colors.black),
+                Formulario(labelText: 'Digite seu Nome', controller: nomeController),
                 Formulario(
                   labelText: 'Digite seu peso',
                   controller: pesoController,
@@ -70,24 +67,22 @@ class _HomePageState extends State<HomePage> {
                   child: SizedBox(
                     height: 50.0,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final pessoa = PessoaSqliteModel(
-                          nomeController.text,
-                          double.parse(pesoController.text),
-                          double.parse(alturaController.text),
+                          nome: nomeController.text,
+                          peso: double.parse(pesoController.text),
+                          altura: double.parse(alturaController.text),
                         );
-                        PessoaSqliteRepository().salvarPessoa(pessoa);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResultadoPage(
-                                  imc: PessoaSqliteModel.calculoImc(
-                                      double.parse(pesoController.text),
-                                      double.parse(alturaController.text)),
-                                  peso: double.parse(pesoController.text),
-                                  altura: double.parse(alturaController.text),
-                                )));
+
+                        await PessoaSqliteRepository().salvarPessoa(pessoa);
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ResultadoPage(),
+                          ),
+                        );
                       },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
                       child: const Text(
                         "Calcular",
                         style: TextStyle(color: Colors.white, fontSize: 25.0),

@@ -1,70 +1,7 @@
-/*/import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
-import 'package:calculadoraimc/db_helper/sqlitedatabase.dart';
-
-class PessoaSqliteRepository {
-  Future<List<PessoaSqliteModel>> obterDados() async {
-    List<PessoaSqliteModel> Pessoas = [];
-    var db = await SqliteDatabase().obterDataBase();
-    var result = await db.rawQuery(
-        'SELECT id, nome, data, altura, peso, imc, resultadoImc FROM pessoas');
-    for (var element in result) {
-      PessoaSqliteModel pessoa = PessoaSqliteModel(
-          int.parse(element["id"].toString()),
-          element["nome"].toString(),
-          double.parse(element["peso"].toString()),
-          double.parse(element["altura"].toString()));
-      Pessoas.add(pessoa);
-    }
-    return Pessoas;
-  }
-
-  Future<void> salvar(PessoaSqliteModel pessoaSqliteModel) async {
-    if (pessoaSqliteModel.id > 0) {
-      atualizar(pessoaSqliteModel);
-    } else {
-      var db = await SqliteDatabase().obterDataBase();
-      pessoaSqliteModel.calculoImc(
-          pessoaSqliteModel.peso, pessoaSqliteModel.altura);
-      await db.rawInsert(
-          'INSERT INTO pessoas (nome, data, peso, altura, imc, resultadoImc) values(?,?,?,?,?,?)',
-          [
-            pessoaSqliteModel.nome,
-            pessoaSqliteModel.data,
-            pessoaSqliteModel.peso,
-            pessoaSqliteModel.altura,
-            pessoaSqliteModel.imc,
-            pessoaSqliteModel.resultadoImc
-          ]);
-    }
-  }
-
-  Future<void> atualizar(PessoaSqliteModel pessoaSqliteModel) async {
-    var db = await SqliteDatabase().obterDataBase();
-    pessoaSqliteModel.calculoImc(
-        pessoaSqliteModel.peso, pessoaSqliteModel.altura);
-    await db.rawUpdate(
-        'UPDATE pessoas SET nome = ?, data = ?, altura = ?, peso = ?, imc = ?, resultadoImc = ? WHERE id = ?',
-        [
-          pessoaSqliteModel.nome,
-          pessoaSqliteModel.data,
-          pessoaSqliteModel.peso,
-          pessoaSqliteModel.altura,
-          pessoaSqliteModel.imc,
-          pessoaSqliteModel.resultadoImc,
-          pessoaSqliteModel.id
-        ]);
-  }
-
-  Future<void> remove(int id) async {
-    var db = await SqliteDatabase().obterDataBase();
-    await db.rawDelete('DELETE FROM pessoas WHERE id = ?', [id]);
-  }
-}*/
-
 import 'package:calculadoraimc/model/pessoa_sqlite_model.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class PessoaSqliteRepository {
   final String _databaseName = 'seu_banco_de_dados.db';
@@ -94,8 +31,8 @@ class PessoaSqliteRepository {
       'peso': pessoa.peso,
       'altura': pessoa.altura,
       'data': DateFormat('dd/MM/yy').format(DateTime.now()),
-      'imc': pessoa.imc,
-      'resultadoImc': pessoa.resultadoImc,
+      'imc': pessoa.peso / (pessoa.altura * pessoa.altura),
+      'resultadoImc': PessoaSqliteModel.calculoImc(pessoa.peso, pessoa.altura),
     };
     await db.insert(_tableName, pessoaData);
   }
@@ -103,10 +40,19 @@ class PessoaSqliteRepository {
   Future<List<PessoaSqliteModel>> obterTodasPessoas() async {
     final Database db = await _initializeDatabase();
     final List<Map<String, dynamic>> results = await db.query(_tableName);
-    return results.map((map) {
-      return PessoaSqliteModel(
-          map['nome'], map['peso'], map['altura'], map['resultadoImc']);
-    }).toList();
+    return results
+        .map(
+          (e) => PessoaSqliteModel(
+            nome: e['nome'],
+            peso: e['peso'],
+            altura: e['altura'],
+            data: e['data'],
+            imc: e['imc'],
+            resultadoImc: e['resultadoImc'],
+            id: e['id'],
+          ),
+        )
+        .toList();
   }
 
   Future<void> atualizarPessoa(PessoaSqliteModel pessoa) async {
